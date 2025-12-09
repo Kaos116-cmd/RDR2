@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RDR2 Tracker Diario</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Diario del Forajido</h1>
+        <p>Escribe aquí tu día en el juego para actualizar tus atributos:</p>
+
+        <textarea id="entradaDiario" rows="10" placeholder="Ej: Hoy he subido mi salud a nivel 6. Cacé con Cripps y perdí algo de honor..."></textarea>
+        
+        <button onclick="procesarDiario()">Analizar y Actualizar</button>
+
+        <h2>Estado Actual del Personaje</h2>
+        <div id="estadoPersonaje">
+            <!-- Aquí se mostrarán los atributos actualizados con JavaScript -->
+            <p>Salud: <span id="attrSalud">--</span></p>
+            <p>Honor: <span id="attrHonor">--</span></p>
+            <p>Peso: <span id="attrPeso">--</span></p>
+            <p>Relación Cripps: <span id="attrCripps">--</span></p>
+        </div>
+    </div>
+
+    <!-- Incluimos nuestro archivo JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
