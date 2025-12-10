@@ -24,8 +24,10 @@ async function procesarDiario() {
 
 // Función REAL que llama a Google Cloud NL API (CORREGIDA)
 async function llamarGoogleCloudNLAPI(texto) {
-    // CAMBIO 1: La URL debe ser absoluta y la clave debe insertarse como parámetro de consulta
-    const endpoint = `language.googleapis.com{API_KEY}`;
+    const googleEndpoint = `language.googleapis.com{API_KEY}`;
+    
+    // Añade el proxy delante de la URL de Google
+    const endpoint = `corsproxy.io{encodeURIComponent(googleEndpoint)}`;
     
     // CAMBIO 2: El objeto 'document' debe estar dentro de un objeto de solicitud si usas Analyze Entities
     const data = {
@@ -93,3 +95,4 @@ function actualizarUI() {
 
 // Inicializar la UI al cargar la página
 actualizarUI();
+
