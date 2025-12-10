@@ -1,6 +1,6 @@
 // Paso 0: Tu Clave API de Google Cloud
 // Asegúrate de que esta clave sea válida y esté descomentada en tu archivo real.
-const API_KEY = "AIzaSyCPd2nZNScU79Zt_8P3H5Bj3r50QG2xYKM"; // REEMPLAZA ESTO SIN CORCHETES
+const API_KEY = "xxx"; // REEMPLAZA ESTO SIN CORCHETES
 
 let personaje = {
     salud: 5, honor: 0, peso: "Normal",
@@ -95,4 +95,5 @@ function actualizarUI() {
 
 // Inicializar la UI al cargar la página
 actualizarUI();
+
 
