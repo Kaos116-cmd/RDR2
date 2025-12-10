@@ -1,5 +1,6 @@
 // Paso 0: Tu Clave API de Google Cloud
-const API_KEY = "[AIzaSyCPd2nZNScU79Zt_8P3H5Bj3r50QG2xYKM]"; // <-- REEMPLAZA ESTO CON TU CLAVE REAL
+// Asegúrate de que esta clave sea válida y esté descomentada en tu archivo real.
+const API_KEY = "AIzaSyCPd2nZNScU79Zt_8P3H5Bj3r50QG2xYKM"; // REEMPLAZA ESTO SIN CORCHETES
 
 let personaje = {
     salud: 5, honor: 0, peso: "Normal",
@@ -21,33 +22,52 @@ async function procesarDiario() {
     actualizarUI();
 }
 
-// Función REAL que llama a Google Cloud NL API
+// Función REAL que llama a Google Cloud NL API (CORREGIDA)
 async function llamarGoogleCloudNLAPI(texto) {
+    // CAMBIO 1: La URL debe ser absoluta y la clave debe insertarse como parámetro de consulta
     const endpoint = `language.googleapis.com{API_KEY}`;
+    
+    // CAMBIO 2: El objeto 'document' debe estar dentro de un objeto de solicitud si usas Analyze Entities
     const data = {
         document: { content: texto, type: 'PLAIN_TEXT', language: 'es' },
         encodingType: 'UTF8'
     };
 
-    const respuesta = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-    });
-    
-    return await respuesta.json(); // Devuelve el JSON de Google
+    try {
+        const respuesta = await fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+
+        if (!respuesta.ok) {
+            // Manejar errores de la API (ej. clave inválida, cuota excedida)
+            const errorBody = await respuesta.json();
+            console.error("Error en la llamada a la API:", errorBody);
+            alert("Error al conectar con la API de Google: " + errorBody.error.message);
+            return null; // Devolvemos null para evitar errores en mapearAtributos
+        }
+        
+        return await respuesta.json(); // Devuelve el JSON de Google
+
+    } catch (error) {
+        // Manejar errores de red o CORS
+        console.error("Error de red o CORS:", error);
+        alert("No se pudo conectar con el servidor de Google. Revisa la consola para más detalles (posible error de CORS o configuración de backend).");
+        return null;
+    }
 }
 
 // Función de Mapeo (donde el error de lógica podría estar)
 function mapearAtributos(apiResult, textoOriginal) {
-    const textoMinusculas = textoOriginal.toLowerCase();
-    
-    // Asegúrate de que apiResult.entities exista
+    // Asegúrate de que apiResult exista y tenga entidades antes de continuar
     if (!apiResult || !apiResult.entities) {
-        console.error("API Result is invalid or empty", apiResult);
+        console.error("API Result is invalid or empty, skipping mapping.", apiResult);
         return;
     }
 
+    const textoMinusculas = textoOriginal.toLowerCase();
+    
     apiResult.entities.forEach(entidad => {
         const nombreEntidad = entidad.name.toLowerCase();
 
